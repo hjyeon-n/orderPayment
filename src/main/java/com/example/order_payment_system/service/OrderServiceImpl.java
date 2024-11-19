@@ -5,8 +5,12 @@ import com.example.order_payment_system.dto.order.OrderRequestDto;
 import com.example.order_payment_system.dto.order.OrderResponseDto;
 import com.example.order_payment_system.entity.Order;
 import com.example.order_payment_system.repository.OrderRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
+@Slf4j
 @Service
 public class OrderServiceImpl implements OrderService {
 
@@ -30,6 +34,21 @@ public class OrderServiceImpl implements OrderService {
         OrderEventDto orderEventDto = new OrderEventDto(order.getOrderId(), order.getProduct(), order.getQuantity(), order.getStatus());
 
         orderProducerService.sendOrderEvent(orderEventDto);
+
+        return OrderResponseDto.toDto(order);
+    }
+
+    @Override
+    public List<OrderResponseDto> getOrders(OrderRequestDto orderRequestDto) {
+        return orderRepository.findAll().stream()
+                .map(OrderResponseDto::toDto)
+                .toList();
+    }
+
+    @Override
+    public OrderResponseDto getOrderById(Long orderId) {
+        Order order = orderRepository.findById(orderId)
+                .orElseThrow(() -> new RuntimeException("Order not found with ID: " + orderId));
 
         return OrderResponseDto.toDto(order);
     }
