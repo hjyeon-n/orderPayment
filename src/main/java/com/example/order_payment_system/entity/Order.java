@@ -1,6 +1,7 @@
 package com.example.order_payment_system.entity;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -9,6 +10,8 @@ import lombok.NoArgsConstructor;
 @Table(name = "orders")
 @Getter
 @NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class Order {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -16,12 +19,4 @@ public class Order {
     private String product;
     private int quantity;
     private String status = "PENDING";
-
-    @Builder
-    public Order(Long orderId, String product, int quantity, String status) {
-        this.orderId = orderId;
-        this.product = product;
-        this.quantity = quantity;
-        this.status = status;
-    }
 }

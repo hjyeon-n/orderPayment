@@ -17,18 +17,21 @@ public class OrderController {
         this.orderService = orderService;
     }
 
+    // 주문 생성
     @PostMapping("/orders")
     public ResponseEntity<OrderResponseDto> createOrders(@RequestBody OrderRequestDto orderRequestDto) {
         OrderResponseDto orderResponseDto = orderService.createOrder(orderRequestDto);
         return ResponseEntity.ok(orderResponseDto);
     }
 
+    // 주문 리스트 조회
     @GetMapping("/orders")
     public ResponseEntity<List<OrderResponseDto>> getOrders(@RequestBody OrderRequestDto orderRequestDto) {
         List<OrderResponseDto> orders = orderService.getOrders(orderRequestDto);
         return ResponseEntity.ok(orders);
     }
 
+    // 단일 주문 조회
     @GetMapping("/orders/{orderId}")
     public ResponseEntity<OrderResponseDto> getOrderById(@PathVariable Long orderId) {
         OrderResponseDto order = orderService.getOrderById(orderId);
