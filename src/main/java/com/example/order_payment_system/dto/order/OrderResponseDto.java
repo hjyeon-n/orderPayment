@@ -1,29 +1,32 @@
 package com.example.order_payment_system.dto.order;
 
+import com.example.order_payment_system.dto.product.ProductResponseDto;
 import com.example.order_payment_system.entity.Order;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
 
-@Getter
-@AllArgsConstructor
-@NoArgsConstructor
-@Builder
-public class OrderResponseDto {
-    private Long orderId;
-    private String product;
-    private int quantity;
-    private String state;
+import java.time.LocalDate;
+import java.util.List;
+
+public record OrderResponseDto(Long orderId,
+                               String status,
+                               LocalDate orderDate,
+                               List<ProductResponseDto> products) {
 
     public static OrderResponseDto toDto(Order order) {
-        OrderResponseDto orderResponseDto = OrderResponseDto.builder()
-                .orderId(order.getOrderId())
-                .product(order.getProduct())
-                .quantity(order.getQuantity())
-                .state(order.getStatus())
-                .build();
+        List<ProductResponseDto> productDtos = order.getOrderItems().stream()
+                .map(orderItem -> new ProductResponseDto(
+                        orderItem.getProduct().getProductId(),
+                        orderItem.getProduct().getName(),
+                        orderItem.getProduct().getPrice(),
+                        orderItem.getQuantity()
+                ))
+                .toList();
 
-        return orderResponseDto;
+        return new OrderResponseDto(
+                order.getOrderId(),
+                order.getStatus(),
+                order.getOrderDate(),
+                productDtos
+        );
     }
+
 }

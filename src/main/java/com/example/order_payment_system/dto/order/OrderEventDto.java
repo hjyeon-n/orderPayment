@@ -1,17 +1,10 @@
 package com.example.order_payment_system.dto.order;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import com.example.order_payment_system.dto.product.ProductEventDto;
 
-@Getter
-@AllArgsConstructor
-@NoArgsConstructor
-@Builder
-public class OrderEventDto {
-    private Long orderId;
-    private String product;
-    private int quantity;
-    private String state;
+import java.util.List;
+
+public record OrderEventDto(Long orderId,
+                            List<ProductEventDto> products,
+                            String status) {
 }
