@@ -7,6 +7,7 @@ import com.example.order_payment_system.entity.Product;
 import com.example.order_payment_system.repository.OrderRepository;
 import com.example.order_payment_system.repository.ProductRepository;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -69,6 +70,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
+    @Cacheable(value = "orders", key = "#orderId")
     public OrderResponseDto getOrderById(Long orderId) {
         Order order = orderRepository.findById(orderId)
                 .orElseThrow(() -> new RuntimeException("Order not found with ID: " + orderId));
