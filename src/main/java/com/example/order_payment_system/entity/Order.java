@@ -23,10 +23,12 @@ public class Order {
 
     private int quantity;
 
+    @Builder.Default
     private String status = "PENDING";
 
     private LocalDate orderDate;
 
+    @Builder.Default
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<OrderItem> orderItems = new ArrayList<>();
 

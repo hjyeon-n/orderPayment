@@ -1,11 +1,13 @@
 package com.example.order_payment_system.controller;
 
+import com.example.order_payment_system.dto.order.OrderFilterDto;
 import com.example.order_payment_system.dto.order.OrderRequestDto;
 import com.example.order_payment_system.dto.order.OrderResponseDto;
 import com.example.order_payment_system.service.OrderService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @RestController
@@ -26,8 +28,14 @@ public class OrderController {
 
     // 주문 리스트 조회
     @GetMapping("/orders")
-    public ResponseEntity<List<OrderResponseDto>> getOrders(@RequestBody OrderRequestDto orderRequestDto) {
-        List<OrderResponseDto> orders = orderService.getOrders(orderRequestDto);
+    public ResponseEntity<List<OrderResponseDto>> getOrdersByCriteria(
+            @RequestParam(required = false)LocalDate startDate,
+            @RequestParam(required = false)LocalDate endDate,
+            @RequestParam(required = false)String status) {
+
+        OrderFilterDto orderFilterDto = new OrderFilterDto(startDate, endDate, status);
+
+        List<OrderResponseDto> orders = orderService.getOrdersByCriteria(orderFilterDto);
         return ResponseEntity.ok(orders);
     }
 

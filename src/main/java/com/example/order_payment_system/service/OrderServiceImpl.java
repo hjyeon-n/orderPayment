@@ -1,9 +1,6 @@
 package com.example.order_payment_system.service;
 
-import com.example.order_payment_system.dto.order.ItemRequestDto;
-import com.example.order_payment_system.dto.order.OrderEventDto;
-import com.example.order_payment_system.dto.order.OrderRequestDto;
-import com.example.order_payment_system.dto.order.OrderResponseDto;
+import com.example.order_payment_system.dto.order.*;
 import com.example.order_payment_system.entity.Order;
 import com.example.order_payment_system.entity.OrderItem;
 import com.example.order_payment_system.entity.Product;
@@ -59,8 +56,14 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public List<OrderResponseDto> getOrders(OrderRequestDto orderRequestDto) {
-        return orderRepository.findAll().stream()
+    public List<OrderResponseDto> getOrdersByCriteria(OrderFilterDto orderFilterDto) {
+        List<Order> orders =  orderRepository.findCriteria(
+                orderFilterDto.startDate(),
+                orderFilterDto.endDate(),
+                orderFilterDto.status()
+        );
+
+        return orders.stream()
                 .map(OrderResponseDto::toDto)
                 .toList();
     }
