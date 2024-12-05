@@ -36,7 +36,6 @@ public class OrderProducerTest {
         // when
         kafkaTemplate.send(topic, message);
 
-        System.out.println("****" + embeddedKafkaBroker);
         // then
         Map<String, Object> consumerProps = KafkaTestUtils.consumerProps("test-group", "true", embeddedKafkaBroker);
 
